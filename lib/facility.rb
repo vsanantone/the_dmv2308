@@ -8,7 +8,7 @@ class Facility
     @services = []
   end
 
-  def add_services(service)
+  def add_service(service)#bug 4 singular service added one at a time
     @services << service
   end
 end
