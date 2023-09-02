@@ -61,8 +61,8 @@ RSpec.describe Facility do
     end
   end
 
-  describe '#new_registration_date' do
-    it 'logs the time of vehicle registered' do
+  describe '#plate_type' do
+    it 'returns plate_type category' do
       # require 'pry'; binding.pry
       expect(@cruz.plate_type).to eq(:regular)
     end
