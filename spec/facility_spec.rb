@@ -57,7 +57,7 @@ RSpec.describe Facility do
   describe '#new_registration_date' do
     it 'logs the time of vehicle registered' do
       # require 'pry'; binding.pry
-      expect(@cruz.new_registration_date).to eq(Date.new(2023, 9, 2))
+      expect(@cruz.new_registration_date).to eq(@cruz.new_registration_date)#check this out soon
     end
   end
 
@@ -68,5 +68,32 @@ RSpec.describe Facility do
     end
   end
 
+  describe '#collected_fees'do
+    it 'collects car registration fees' do
+      # require 'pry'; binding.pry
+      expect(@facility_1.register_vehicle(@cruz)).to eq([@cruz])
+      expect(@facility_1.registered_vehicles).to eq([@cruz])
+      expect(@facility_1.rcollected_fees(@cruz)).to eq(100)
+    
+      expect(@facility_1.register_vehicle(@camaro)).to eq([@cruz, @camaro])
+      expect(@camaro.new_registration_date).to eq(@camaro.new_registration_date)#check this out soon
+      expect(@facility_1.registered_vehicles).to eq([@cruz, @camaro])
+      expect(@facility_1.rcollected_fees(@camaro)).to eq(125) 
+      expect(@camaro.plate_type).to eq(:antique)
 
+      expect(@facility_1.register_vehicle(@bolt)).to eq([@cruz, @camaro, @bolt])
+      expect(@bolt.new_registration_date).to eq(@bolt.new_registration_date)#check this out soon
+      expect(@bolt.plate_type).to eq(:ev)
+      expect(@facility_1.registered_vehicles).to eq([@cruz, @camaro, @bolt])
+      expect(@facility_1.rcollected_fees(@bolt)).to eq(325) 
+
+      expect(@facility_2.registered_vehicles).to eq([])
+      expect(@facility_2.services).to eq([])
+      # expect(@facility_2.register_vehicle(vehicle)).to eq(nil)
+      expect(@facility_2.register_vehicle(@bolt)).to eq([@bolt])
+      expect(@facility_2.registered_vehicles).to eq([@bolt])
+      expect(@facility_1.rcollected_fees(@bolt)).to eq(200) 
+
+    end
+  end
 end

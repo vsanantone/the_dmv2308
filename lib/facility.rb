@@ -18,4 +18,15 @@ class Facility
   def register_vehicle(vehicle)
     @registered_vehicles << vehicle
   end
+
+  def rcollected_fees(vehicle)
+    if vehicle.engine == :ev
+      @collected_fees += 200
+   elsif Date.today.year - vehicle.year < 25
+     @collected_fees += 100
+   else
+     @collected_fees += 25
+   end
+  end
+
 end
