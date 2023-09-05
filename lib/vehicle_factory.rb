@@ -4,16 +4,5 @@ class VehicleFactory
   def initialize
     @vehicles = []
   end
-
-  def create_wa_vehicles(dmv_data)
-    dmv_data.map do |registration|
-      vehicles << Vehicle.new({
-        vin: registration[:vin_1_10],
-        year: registration[:model_year].to_i,
-        make: registration[:make],
-        model: registration[:make],
-        engine: :ev
-      })
-    end.flatten!
-  end
 end
+
