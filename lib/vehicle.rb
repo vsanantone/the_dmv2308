@@ -38,5 +38,4 @@ class Vehicle
       :antique
     end
   end
-  
 end

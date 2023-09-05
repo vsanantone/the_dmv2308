@@ -2,8 +2,8 @@ class Facility
   attr_reader :name, :address, :phone, :services, 
                      :registered_vehicles, :collected_fees
 
-  def initialize(data)#bug 2 wrong format receiving a hash with multiple data inside. Only one argumen
-    @name                = data[:name]#bug 3
+  def initialize(data)
+    @name                = data[:name]
     @address             = data[:address]
     @phone               = data[:phone]
     @services            = []
@@ -11,7 +11,7 @@ class Facility
     @collected_fees      = 0
   end
 
-  def add_service(service)#bug 4 singular service added one at a time
+  def add_service(service)
     @services << service
   end
 

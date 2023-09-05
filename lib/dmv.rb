@@ -1,5 +1,5 @@
 class Dmv
-  attr_reader :facilities#bug5 no attr_reader
+  attr_reader :facilities
 
   def initialize
     @facilities = []
@@ -10,7 +10,7 @@ class Dmv
   end
 
   def facilities_offering_service(service)
-    @facilities.find_all do |facility| #bug6 switch the find to find_all method
+    @facilities.find_all do |facility|
       facility.services.include?(service)
     end
   end
