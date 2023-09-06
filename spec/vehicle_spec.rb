@@ -14,6 +14,7 @@ RSpec.describe Vehicle do
       expect(@cruz.make).to eq('Chevrolet')
       expect(@cruz.model).to eq('Cruz')
       expect(@cruz.engine).to eq(:ice)
+      expect(@cruz.plate_type).to eq(nil)
       expect(@cruz.registration_date).to eq(nil)
     end
   end
@@ -31,6 +32,20 @@ RSpec.describe Vehicle do
       expect(@cruz.electric_vehicle?).to eq(false)
       expect(@bolt.electric_vehicle?).to eq(true)
       expect(@camaro.electric_vehicle?).to eq(false)
+    end
+  end
+
+  describe '#register' do
+    it 'sets the plate type' do
+      expect(@cruz.plate_type).to eq(nil)
+      @cruz.register
+      expect(@cruz.plate_type).to eq(:regular)
+    end
+
+    it 'sets the registration date' do
+      expect(@cruz.registration_date).to eq(nil)
+      @cruz.register
+      expect(@cruz.registration_date).to be_a(Date)
     end
   end
 end
