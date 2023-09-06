@@ -15,7 +15,7 @@ RSpec.describe Facility do
   end
 
   describe '#initialize' do
-    it 'can initialize' do
+    it 'has a name, address, phone and no services by default' do
       expect(@facility_1).to be_an_instance_of(Facility)
       expect(@facility_1.name).to eq('DMV Tremont Branch')
       expect(@facility_1.address).to eq('2855 Tremont Place Suite 118 Denver CO 80205')
@@ -34,70 +34,77 @@ RSpec.describe Facility do
     end
   end
 
-  describe '#registration_date' do
-    it 'date registered' do
-      expect(@cruz.registration_date). to be(nil)
-    end
-  end
-
   describe '#registered_vehicles' do
-    it 'is a list of registered vehicles' do
+    it 'is empty by default' do
       expect(@facility_1.registered_vehicles).to eq([])
     end
   end
 
   describe '#collected_fees' do
-    it 'fees collected by dmv facility for registration of vehicle' do
+    it 'is empty by default' do
       expect(@facility_1.collected_fees).to eq(0)
     end
   end
 
   describe '#register_vehicle' do
     it 'adds vehicle to list of registered_vehicles'do
-      expect(@facility_1.register_vehicle(@cruz)).to eq([@cruz])
-    end
-  end
-
-  describe '#new_registration_date' do
-    it 'logs the time of vehicle registered' do
-      # require 'pry'; binding.pry
-      expect(@cruz.new_registration_date).to eq(@cruz.new_registration_date)#check this out soon
-    end
-  end
-
-  describe '#plate_type' do
-    it 'returns plate_type category' do
-      # require 'pry'; binding.pry
-      expect(@cruz.plate_type).to eq(:regular)
-    end
-  end
-
-  describe '#collected_fees'do
-    it 'collects car registration fees' do
+      @facility_1.add_service('Vehicle Registration')
       expect(@facility_1.register_vehicle(@cruz)).to eq([@cruz])
       expect(@facility_1.registered_vehicles).to eq([@cruz])
-      expect(@facility_1.rcollected_fees(@cruz)).to eq(100)
-    
       expect(@facility_1.register_vehicle(@camaro)).to eq([@cruz, @camaro])
-      expect(@camaro.new_registration_date).to eq(@camaro.new_registration_date)#check this out soon
-      expect(@facility_1.registered_vehicles).to eq([@cruz, @camaro])
-      expect(@facility_1.rcollected_fees(@camaro)).to eq(125) 
-      expect(@camaro.plate_type).to eq(:antique)
-
       expect(@facility_1.register_vehicle(@bolt)).to eq([@cruz, @camaro, @bolt])
-      expect(@bolt.new_registration_date).to eq(@bolt.new_registration_date)#check this out soon
-      expect(@bolt.plate_type).to eq(:ev)
       expect(@facility_1.registered_vehicles).to eq([@cruz, @camaro, @bolt])
-      expect(@facility_1.rcollected_fees(@bolt)).to eq(325) 
     end
-
-    it ' registeres vehicles in the 2nd facility' do
+    
+    it 'cannott register a vehicle if facility does not offer service' do
       expect(@facility_2.registered_vehicles).to eq([])
       expect(@facility_2.services).to eq([])
-      expect(@facility_2.collected_fees).to eq(0) 
-      @facility_2.register_vehicle(@bolt)#interaction pattern says nil
-      expect(@facility_2.registered_vehicles).to eq([@bolt])
-      expect(@facility_2.rcollected_fees(@bolt)).to eq(200) 
+      expect(@facility_2.register_vehicle(@bolt)).to eq(nil)
+      expect(@facility_2.registered_vehicles).to eq([])
+      expect(@facility_2.collected_fees).to eq(0)
+    end
+
+    it 'gives a vehicle a registration date' do
+      @facility_1.add_service('Vehicle Registration')
+      expect(@cruz.registration_date).to eq(nil)
+      @facility_1.register_vehicle(@cruz)
+      expect(@cruz.registration_date).to be_a(Date)
+
+      expect(@camaro.registration_date).to eq(nil)
+      @facility_1.register_vehicle(@camaro)
+      expect(@camaro.registration_date).to be_a(Date)
+
+      expect(@bolt.registration_date).to eq(nil)
+      @facility_1.register_vehicle(@bolt)
+      expect(@bolt.registration_date).to be_a(Date)
+    end
+    
+    it 'changes plate_type category' do
+      @facility_1.add_service('Vehicle Registration')
+      expect(@cruz.plate_type).to eq(nil)
+      @facility_1.register_vehicle(@cruz)
+      expect(@cruz.plate_type).to eq(:regular)
+
+      expect(@camaro.plate_type).to eq(nil)
+      @facility_1.register_vehicle(@camaro)
+      expect(@camaro.plate_type).to eq(:antique)
+
+      expect(@bolt.plate_type).to eq(nil)
+      @facility_1.register_vehicle(@bolt)
+      expect(@bolt.plate_type).to eq(:ev)
+    end
+
+    it 'collects car registration fees' do
+      @facility_1.add_service('Vehicle Registration')
+      expect(@facility_1.collected_fees).to eq(0)
+      @facility_1.register_vehicle(@cruz)
+      expect(@facility_1.collected_fees).to eq(100)
+
+      @facility_1.register_vehicle(@camaro)
+      expect(@facility_1.collected_fees).to eq(125)
+
+      @facility_1.register_vehicle(@bolt)
+      expect(@facility_1.collected_fees).to eq(325)
     end
   end
 
