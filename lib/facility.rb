@@ -16,17 +16,21 @@ class Facility
   end
 
   def register_vehicle(vehicle)
-    @registered_vehicles << vehicle
+    if services.include?("Vehicle Registration")
+      vehicle.register
+      collect_fees(vehicle)
+      @registered_vehicles << vehicle
+    end
   end
 
-  def rcollected_fees(vehicle)
-    if vehicle.engine == :ev
+  def collect_fees(vehicle)
+    if vehicle.electric_vehicle?
       @collected_fees += 200
-   elsif Date.today.year - vehicle.year < 25
-     @collected_fees += 100
-   else
-     @collected_fees += 25
-   end
+    elsif vehicle.antique?
+      @collected_fees += 25
+    else
+      @collected_fees += 100
+    end
   end
 
   def administer_written_test(registrant)
